@@ -68,9 +68,12 @@ public:
   virtual void load(const std::string& in_file_path) override;
   const Buffer<real_t, 3>& getBuffer() const;
   Buffer<real_t, 3>& getBuffer();
+  void generateOrientation(std::vector<Vector4>);
 
 protected:
   Buffer<real_t, 3> position_buf_;
+  Buffer<real_t, 7> pose_buf_;
+  std::vector<std::pair<int64_t, Vector3>> positions_;
 };
 
 class PoseSeries : public CSVTrajectory
@@ -84,6 +87,7 @@ public:
   virtual const Buffer<real_t, 7>& getBuffer() const;
   virtual Buffer<real_t, 7>& getBuffer();
   virtual StampedTransformationVector getStampedTransformationVector();
+  void generate(std::vector<Vector7> points, int64_t timeStamp);
 
   static Transformation getTransformationFromVec7(const Vector7& data);
 
