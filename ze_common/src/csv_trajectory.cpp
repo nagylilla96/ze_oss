@@ -101,24 +101,8 @@ namespace ze
         Vector3 position = readTranslation(items);
         position_buf_.insert(stamp, position);
         positions_.push_back(std::make_pair(stamp, position));
+        buffer_size_++;
       }
-    }
-  }
-
-  void PositionSeries::generateOrientation(std::vector<Vector4> orientations)
-  {
-    uint64_t i = 0;
-    for (auto o : orientations)
-    {
-      if (i > positions_.size())
-      {
-        LOG(WARNING) << "Orientation limit reached!";
-        return;
-      }
-      Vector7 pose;
-      pose << positions_.at(i).second, o;
-      pose_buf_.insert(positions_.at(i).first, pose);
-      i++;
     }
   }
 
@@ -130,6 +114,16 @@ namespace ze
   Buffer<real_t, 3> &PositionSeries::getBuffer()
   {
     return position_buf_;
+  }
+
+  std::pair<int64_t, Vector3> PositionSeries::getPosition(int index)
+  {
+    return positions_.at(index);
+  }
+
+  int PositionSeries::getBufferSize()
+  {
+    return buffer_size_;
   }
 
   PoseSeries::PoseSeries()
